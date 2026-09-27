@@ -990,7 +990,7 @@ h3 .cal-ico{margin-left:8px;transform:translateY(-1px)}
 }
 </style>
 </head>
-<script>window.__BACKEND=true;</script>
+<script>window.__BACKEND=false;/* 静态快照站：无后端，数据取自随包快照 */</script>
 <body>
 <div id="caliber-tip"></div>
 <div id="scr-tooltip" class="scr-tooltip"></div>
@@ -999,19 +999,19 @@ h3 .cal-ico{margin-left:8px;transform:translateY(-1px)}
     <h1>城市换电业务看板</h1>
     <div class="sub">请使用手机号登录后查看 · 按角色展示对应板块</div>
     <label>手机号</label>
-    <input id="au-phone" type="tel" inputmode="numeric" placeholder="请输入手机号" value="138****5daa">
+    <input id="au-phone" type="tel" inputmode="numeric" placeholder="请输入手机号" value="13800000000">
     <label>密码</label>
     <input id="au-pwd" type="password" placeholder="请输入密码">
     <button class="login-btn" id="au-login" type="button" onclick="doLogin()">登 录</button>
     <button class="login-btn demo-login" id="au-demo" type="button" onclick="doLoginDemo()">免密进入（演示 · 管理员）</button>
     <div class="err" id="au-err"></div>
     <div class="demo">演示账号（手机号 / 密码 · 角色）：<br>
-      <b>138****5daa</b> / admin123 · 管理员（全部板块）<br>
-      <b>138****4d00</b> / fin123 · 财务（财务 / 销售 / 用户）<br>
-      <b>138****cd96</b> / ops123 · 运维（设备 / 运维 / 网点）<br>
-      <b>138****e910</b> / sal123 · 销售（销售 / 用户 / 网点 / 设备）<br>
-      <b>138****5fb3</b> / svc123 · 客服（客服 / 用户）<br>
-      <b>138****4c68</b> / view123 · 访客（仅总览）</div>
+      <b>13800000000</b> / admin123 · 管理员（全部板块）<br>
+      <b>13800000001</b> / fin123 · 财务（财务 / 销售 / 用户）<br>
+      <b>13800000002</b> / ops123 · 运维（设备 / 运维 / 网点）<br>
+      <b>13800000003</b> / sal123 · 销售（销售 / 用户 / 网点 / 设备）<br>
+      <b>13800000004</b> / svc123 · 客服（客服 / 用户）<br>
+      <b>13800000005</b> / view123 · 访客（仅总览）</div>
   </div>
 </div>
 <div class="layout">
@@ -3756,18 +3756,18 @@ function distinctStatus(arr){const s=new Set();(arr||[]).forEach(r=>{if(r.status
 // in_unit = 收入方/收款方代码；agency = 代理商(总代理)；business = 业务员姓名
 const INUNIT_MAP = {swapSite:'换电网点',signSite:'签约网点',signSiteChannel:'签约网点渠道',signSiteSale:'签约网点销售',swapSiteChannel:'换电网点渠道',swapAgency:'换电代理商',signAgency:'签约代理商',promoter:'导购',l2_promoter:'二级推广',merchant:'商户',consumer:'消费者',consumer_agreement:'消费协议',bank:'银行',company:'公司'};
 const FIN_STATUS_MAP = {init:'待结算',settle:'已结算',cancel:'已取消'};
-const ALL_CITIES = collectVals([DATA.user&&DATA.user.detail, DATA.sales&&DATA.sales.detail, DATA.site&&DATA.site.detail, DATA.service&&DATA.service.agreement_index],'city').map(x=>({v:x,t:shortCity(x)}));
-const ALL_BATTERIES = collectVals([DATA.user&&DATA.user.detail, DATA.sales&&DATA.sales.detail],'battery_product').map(x=>({v:x,t:x}));
-const ALL_PROMOTERS = collectVals([DATA.sales&&DATA.sales.detail],'promoter').filter(x=>x).map(x=>({v:x,t:x}));
-const ALL_BUSINESS = collectVals([DATA.site&&DATA.site.detail],'business').filter(x=>x).map(x=>({v:x,t:x}));
-const ALL_AGENCY = collectVals([DATA.user&&DATA.user.detail, DATA.ops&&DATA.ops.warn_recent, DATA.device&&DATA.device.battery_detail],'agency').filter(x=>x).map(x=>({v:x,t:x}));
+const ALL_CITIES = collectVals([DATA.user&&(DATA.user||{}).detail, DATA.sales&&(DATA.sales||{}).detail, DATA.site&&(DATA.site||{}).detail, DATA.service&&DATA.service.agreement_index],'city').map(x=>({v:x,t:shortCity(x)}));
+const ALL_BATTERIES = collectVals([DATA.user&&(DATA.user||{}).detail, DATA.sales&&(DATA.sales||{}).detail],'battery_product').map(x=>({v:x,t:x}));
+const ALL_PROMOTERS = collectVals([DATA.sales&&(DATA.sales||{}).detail],'promoter').filter(x=>x).map(x=>({v:x,t:x}));
+const ALL_BUSINESS = collectVals([DATA.site&&(DATA.site||{}).detail],'business').filter(x=>x).map(x=>({v:x,t:x}));
+const ALL_AGENCY = collectVals([DATA.user&&(DATA.user||{}).detail, DATA.ops&&DATA.ops.warn_recent, DATA.device&&DATA.device.battery_detail],'agency').filter(x=>x).map(x=>({v:x,t:x}));
 const ALL_INUNITS = collectVals([DATA.finance&&DATA.finance.recon&&DATA.finance.recon.by_in],'unit').filter(x=>x).map(x=>({v:x,t:(INUNIT_MAP[x]||x)}));
 const ALL_CAB_TYPES = collectVals([DATA.device&&DATA.device.cabinet_detail],'cabinet_type').filter(x=>x).map(x=>({v:x,t:x}));
 const ALL_SITE_TYPES = (DATA.site&&DATA.site.by_type||[]).map(d=>({v:d.type,t:(SITE_TYPE_CN[d.type]||('未知('+d.type+')'))})).filter(x=>x&&x.v);
 const ALL_BRANDS = collectVals([DATA.device&&DATA.device.battery_detail],'brand_name').filter(x=>x).map(x=>({v:x,t:shortBrand(x)}));
-const ALL_DISTRIBUTOR = collectVals([DATA.site&&DATA.site.detail],'distributor_name').filter(x=>x).map(x=>({v:x,t:x}));
-const STATUS_OPTS = (function(){const keys=['working','owe_rent','stop','cancelled','paused','unsubscribing','wait_activate'];const out=[];keys.forEach(k=>{if(distinctStatus(DATA.user&&DATA.user.detail).indexOf(k)>=0||distinctStatus(DATA.sales&&DATA.sales.detail).indexOf(k)>=0)out.push({v:k,t:(CN.status[k]||k)});});if(!out.length)keys.forEach(k=>out.push({v:k,t:CN.status[k]||k}));return out;})();
-const FIN_STATUS_OPTS = Array.from(new Set((DATA.finance&&DATA.finance.detail||[]).map(r=>r.status).filter(x=>x))).map(s=>({v:s,t:(FIN_STATUS_MAP[s]||s)}));
+const ALL_DISTRIBUTOR = collectVals([DATA.site&&(DATA.site||{}).detail],'distributor_name').filter(x=>x).map(x=>({v:x,t:x}));
+const STATUS_OPTS = (function(){const keys=['working','owe_rent','stop','cancelled','paused','unsubscribing','wait_activate'];const out=[];keys.forEach(k=>{if(distinctStatus(DATA.user&&(DATA.user||{}).detail).indexOf(k)>=0||distinctStatus(DATA.sales&&(DATA.sales||{}).detail).indexOf(k)>=0)out.push({v:k,t:(CN.status[k]||k)});});if(!out.length)keys.forEach(k=>out.push({v:k,t:CN.status[k]||k}));return out;})();
+const FIN_STATUS_OPTS = Array.from(new Set((DATA.finance&&(DATA.finance||{}).detail||[]).map(r=>r.status).filter(x=>x))).map(s=>({v:s,t:(FIN_STATUS_MAP[s]||s)}));
 
 // 电池地理/代理商派生：经 cabinet_sn 反查换电柜的 城市/区域/街道/代理商ID（用户确认电池归属可由换电柜地址推断）
 const CAB_GEO = (function(){
@@ -3781,12 +3781,12 @@ const state = {}; // state[mod] = {key:value}
 
 // ---------- auth & role ----------
 const USERS = {
-  "138****5daa":{pwd"***",role:"admin",name:"管理员"},
-  "138****4d00":{pwd"***",role:"finance",name:"财务-李"},
-  "138****cd96":{pwd"***",role:"ops",name:"运维-王"},
-  "138****e910":{pwd"***",role:"sales",name:"销售-赵"},
-  "138****5fb3":{pwd"***",role:"service",name:"客服-孙"},
-  "138****4c68":{pwd"***",role:"viewer",name:"访客"}
+  "13800000000":{pwd:"admin123",role:"admin",name:"管理员"},
+  "13800000001":{pwd:"fin123",role:"finance",name:"财务-李"},
+  "13800000002":{pwd:"ops123",role:"ops",name:"运维-王"},
+  "13800000003":{pwd:"sal123",role:"sales",name:"销售-赵"},
+  "13800000004":{pwd:"svc123",role:"service",name:"客服-孙"},
+  "13800000005":{pwd:"view123",role:"viewer",name:"访客"}
 };
 const ROLE_MODULES = {
   admin:["dash","overview","user","sales","site","device","coupon","ops","personnel","finance","service","analytics","risk","bizdec","screen"],
@@ -3817,8 +3817,8 @@ function doLogin(){
 }
 function doLoginDemo(){
   // 免密演示登录：直接以管理员身份进入（可见全部板块，含 4 套大屏）。用于手机端不便输入密码时快速预览。
-  const u=USERS["138****5daa"];
-  const sess={phone:"138****5daa",role:"admin",name:u?u.name:"管理员",ts:Date.now(),demo:true};
+  const u=USERS["13800000000"];
+  const sess={phone:"13800000000",role:"admin",name:u?u.name:"管理员",ts:Date.now(),demo:true};
   try{ localStorage.setItem(SESS_KEY, JSON.stringify(sess)); }catch(e){}
   enterApp(sess);
 }
@@ -3856,10 +3856,10 @@ function initAuth(){
   if(!window.__BACKEND){
     // 预览模式：URL 带 ?demo=1 / ?preview=1 / ?p=1 时，免登录直接以管理员身份进入（用于手机/局域网快速预览）
     const qs=(location.search||'').replace(/^\?/,'');
-    const hasDemo=/^(demo|preview|p)=1$/.test(qs) || qs.split('&').some(p=>/^(demo|preview|p)=1$/.test(p));
+    const hasDemo=true; /* 静态演示站：默认免登录进入 */
     if(hasDemo){
-      const u=USERS["138****5daa"];
-      const sess={phone:"138****5daa",role:"admin",name:u?u.name:"管理员",ts:Date.now(),demo:true};
+      const u=USERS["13800000000"];
+      const sess={phone:"13800000000",role:"admin",name:u?u.name:"管理员",ts:Date.now(),demo:true};
       try{ localStorage.setItem(SESS_KEY, JSON.stringify(sess)); }catch(e){}
       enterApp(sess);
       return;
@@ -4111,13 +4111,13 @@ function matchRow(r, f, mod){
 }
 function baseRows(mod){
   switch(mod){
-    case 'user': return DATA.user.detail||[];
-    case 'sales': return DATA.sales.detail||[];
-    case 'site': return DATA.site.detail||[];
+    case 'user': return (DATA.user||{}).detail||[];
+    case 'sales': return (DATA.sales||{}).detail||[];
+    case 'site': return (DATA.site||{}).detail||[];
     case 'device': return null; // handled specially
     case 'ops': return DATA.ops.warn_recent||[];
     case 'personnel': return null;
-    case 'finance': return DATA.finance.detail||[];
+    case 'finance': return (DATA.finance||{}).detail||[];
     case 'service': return DATA.service.agreement_index||[];
     default: return [];
   }
@@ -4238,7 +4238,7 @@ function normAgreementRow(r){
   o.overdue_days=od;
   return o;
 }
-function drawUser(f, rows, filtered){
+function drawUser(f, rows, filtered){ rows=rows||[];
   const U=DATA.user||{}, F=DATA.finance||{};
   if(!USER_CMP) USER_CMP=computeUserCmp();
   if(!USER_YOY) USER_YOY=computeUserYoY();
@@ -4404,7 +4404,7 @@ function drawUserLadder(items){
   });
   el.innerHTML=html;
 }
-function drawSales(f, rows, filtered){
+function drawSales(f, rows, filtered){ rows=rows||[];
   const S=DATA.sales||{};
   // 状态计数（真实，来自筛选后明细）
   const st=grp(rows,'status');
@@ -4443,11 +4443,11 @@ function drawSales(f, rows, filtered){
     bar('s-promo',promoSrc.map(d=>shortCity(d.city||'')+' / '+(d.promoter||'—')),promoSrc.map(d=>d.count),'签约量',true, i=>{const d=promoSrc[i];state.sales=state.sales||{};state.sales.promoter=d.promoter;state.sales.city=d.city;buildFilterBar('sales');applyFilters('sales');});
   }
 }
-function drawPkgOrder(f, rows, filtered){
+function drawPkgOrder(f, rows, filtered){ rows=rows||[];
   // 套餐购买订单明细：走 citybike_pkg_v1 全量引擎（独立 gz 包，首次加载后本地缓存）
   if(typeof PKG!=='undefined'){ PKG.enter(); }
 }
-function drawPkgTable(f, rows, filtered){
+function drawPkgTable(f, rows, filtered){ rows=rows||[];
   const agg={}; (rows||[]).forEach(r=>{ const p=(r.package!=null&&r.package!=='')?r.package:'未知'; agg[p]=(agg[p]||0)+1; });
   const tbl=Object.keys(agg).sort((a,b)=>agg[b]-agg[a]).map(p=>({
     package:p,
@@ -4460,7 +4460,7 @@ function drawPkgTable(f, rows, filtered){
   renderRows('s-pkgtbl', tbl);
 }
 let BIZQ='';
-function drawBizPerf(f, rows, filtered){
+function drawBizPerf(f, rows, filtered){ rows=rows||[];
   const W=DATA.site||{}; const sites=(W.detail||[]);
   const S=DATA.sales||{}; const BIZ=(S.business||{});
   const q=(BIZQ||'').trim();
@@ -4520,7 +4520,7 @@ function drawBizPerf(f, rows, filtered){
   if(elNote)elNote.textContent='查询「'+q+'」命中 '+hit.length+' 个网点（真实数据）。上方图表为全量业务员总览。';
 }
 let SITEQ='';
-function drawSiteRPerf(f, rows, filtered){
+function drawSiteRPerf(f, rows, filtered){ rows=rows||[];
   const W=DATA.site||{}; const sites=(W.detail||[]);
   const S=DATA.sales||{}; const BIZ=(S.business||{});
   const q=(SITEQ||'').trim();
@@ -4554,13 +4554,13 @@ function drawSiteRPerf(f, rows, filtered){
   pie('s-site-sitestatus', Object.keys(st).map(k=>({name:CN.site_status[k]||k,value:st[k]})), null, '个');
   naChart('s-site-pkg','⚠️ 不同套餐销售总数需 sales.merchant/business + 订单字段。');
   // 真实：城市×导购×套餐 透视（销售明细，按导购名过滤）
-  const sd=(DATA.sales.detail||[]).filter(r=> q && String(r.promoter||'').includes(q));
+  const sd=((DATA.sales||{}).detail||[]).filter(r=> q && String(r.promoter||'').includes(q));
   const m={}; sd.forEach(r=>{ const c=r.city||'未知', pr=r.promoter||'未知', p=r.package||'未知'; const k=c+'||'+pr+'||'+p; if(!m[k]) m[k]={city:c,promoter:pr,package:p,count:0}; m[k].count++; });
   renderRows('s-sitertbl', Object.keys(m).map(k=>m[k]).sort((a,b)=>b.count-a.count));
   renderRows('s-site-sitelist', hit.map(s=>({id:s.id,name:s.name,city:s.city,type:SITE_TYPE_CN[s.type]||s.type_name||s.type,status:siteTag(s.status),business:s.business,merchant_id:s.merchant_id,agency_id:s.agency_id,create:s.create,open:s.open})));
   if(elNote)elNote.textContent='✅ 名下网点（'+hit.length+' 个）为真实数据（网点表 merchant_id / business 字段）；销售类指标待抽取 merchant/business + 订单金额字段后补全。';
 }
-function drawSite(f, rows, filtered){
+function drawSite(f, rows, filtered){ rows=rows||[];
   const W=DATA.site||{}, S=DATA.sales||{}, SD=S.detail||[];
   // 状态分布(优先用 audit_status，兼容 status)
   const audKey=function(r){ return (r.audit_status&&r.audit_status!=='')?r.audit_status:(r.status||'未知'); };
@@ -4722,7 +4722,7 @@ function drawSiteSalesPerf(){
   renderRows('w-splist', sites.map(s=>({id:s.id,name:s.name,city:s.city,type:SITE_TYPE_CN[s.type]||s.type_name||s.type,status:siteTag(s.status),business:s.business,merchant_id:s.merchant_id,agency_id:s.agency_id,create:s.create,open:s.open})));
   const cap=document.getElementById('w-spcap'); if(cap) cap.textContent=sites.length+(CAP.site?'（样本上限 '+CAP.site+'）':'');
 }
-function drawOps(f, rows, filtered){
+function drawOps(f, rows, filtered){ rows=rows||[];
   const O=DATA.ops||{}; const WO=(O.work_order)||{};
   const woRows=(WO.list||[]).filter(r=>matchRow(r,f,'ops'));
   kpis(document.getElementById('o-kpis'),[
@@ -4754,7 +4754,7 @@ function drawOps(f, rows, filtered){
   }
   renderWorkOrderTable(f);
 }
-function drawFinance(f, rows, filtered){
+function drawFinance(f, rows, filtered){ rows=rows||[];
   const F=DATA.finance||{}; const Pf=(F.profit||{});
   const sub=filtered?'⚠️金额类需全量账单数据（样本不可得）；明细与费用名分布已按筛选实时更新':'';
   kpis(document.getElementById('f-kpis'),[
@@ -5215,7 +5215,7 @@ function applyOverview(f){
   const sitePipe=['待送货','待安装','待验收','待开业','待审批'].reduce((a,k)=>a+(site9[k]||0),0);
   const cabTotal=OV.cabinet_total||0;                                       // 8608
 
-  document.getElementById('ck-user').innerHTML=[
+  (document.getElementById('ck-user')||{}).innerHTML =[
     ckCard({label:'用户总人数',value:fmt(userCnt),cls:'user',sub:(cityF||timeF)?('样本·'+(timeF?pLab:'城市')+' '+fmt(OV.user_total)):'全量·累计',nav:'user'}),
     ckCard({label:'新增注册用户',value:fmt(newRegDb),cls:'user',sub:'近30天·DB真实抽取'}),
     ckCard({label:'消费订单数',value:fmt(ordTotal),cls:'user',sub:'全量累计·截至'+dMax}),
@@ -5248,7 +5248,7 @@ function applyOverview(f){
   // 网点类型分布
   const tpMap={}; siteAll.forEach(r=>{ if(cityF&&!eq(r.city,cityF))return; const k=r.type_name||r.type||'?'; tpMap[k]=(tpMap[k]||0)+1; });
 
-  document.getElementById('ck-site').innerHTML=[
+  (document.getElementById('ck-site')||{}).innerHTML =[
     ckCard({label:'网点总数量',value:fmt(siteN),cls:'site',sub:cityF?('样本 · 全量 '+fmt(siteAll.length)):'',nav:'site'}),
     ckCard({label:'运营中网点',value:fmt(stMap['运营中']||stMap[1]||stMap['正常']||'—'),cls:'site',delta:'↑',sub:'状态=运营中'}),
     ckCard({label:'已停用网点',value:fmt(stMap['停用']||stMap[0]||stMap['关闭']||'—'),cls:'site',delta:'↓'}),
@@ -5281,7 +5281,7 @@ function applyOverview(f){
   const cabPct=cabN?Math.round(cabOn/cabN*100):0;
   const batPct=batN?Math.round(batOn/batN*100):0;
 
-  document.getElementById('ck-device').innerHTML=[
+  (document.getElementById('ck-device')||{}).innerHTML =[
     ckCard({label:'换电柜总数',value:fmt(cityF?cabN:OV.cabinet_total),cls:'device',sub:cityF?('样本 · 全量 '+fmt(OV.cabinet_total)):'',nav:'device',preset:{deviceSub:'cabinet'}}),
     ckCard({label:'在线柜',value:fmt(cabOn),cls:'device',delta:'↑'+cabPct+'%',sub:'在线率 '+cabPct+'%'}),
     ckCard({label:'离线柜',value:fmt(cabOff),cls:'device',delta:'↓',tone:'down'}),
@@ -5451,7 +5451,7 @@ function drawDevTransfer(f){
     {k:'op_type',h:'操作类型'},{k:'result',h:'运营结果'},{k:'from_obj',h:'流出对象'},
     {k:'to_obj',h:'流入对象'}
   ],((DATA.device&&DATA.device.transfer))||[]);
-  document.getElementById('tf-count').textContent=(((DATA.device&&DATA.device.transfer))||[]).length?('（'+((DATA.device&&DATA.device.transfer)||[]).length+'）'):'';
+  (document.getElementById('tf-count')||{}).textContent =(((DATA.device&&DATA.device.transfer))||[]).length?('（'+((DATA.device&&DATA.device.transfer)||[]).length+'）'):'';
 }
 // 1 换电柜总览
 function drawDevCabinet(f){
@@ -6403,7 +6403,7 @@ function drawUserUvMap(){
   const cr=(DATA.user&&DATA.user.city_rank)||[];
   const cities=cr.map(r=>({city:shortCity(r.city),count:r.count||0})).filter(c=>c.city).sort((a,b)=>b.count-a.count);
   const total=cities.reduce((s,c)=>s+c.count,0);
-  if(document.getElementById('u-uv-rank-title')) document.getElementById('u-uv-rank-title').textContent='城市用户密度 Top20（共 '+cities.length+' 城 / '+fmt(total)+' 用户）';
+  if(document.getElementById('u-uv-rank-title')) (document.getElementById('u-uv-rank-title')||{}).textContent ='城市用户密度 Top20（共 '+cities.length+' 城 / '+fmt(total)+' 用户）';
   fillDashTable('u-uv-rank-table', cities.slice(0,20).map(c=>({c1:c.city,c2:fmt(c.count),c3:(total?Math.round(c.count/total*100):0)+'%'})));
   const pts=cities.filter(c=>CITY_COORD[c.city]).map(c=>{const co=CITY_COORD[c.city];return {city:c.city,lng:co[0],lat:co[1],value:c.count,extra:'用户 '+fmt(c.count)};});
   if(_uUvChart){_uUvChart.dispose();_uUvChart=null;}
@@ -6898,7 +6898,7 @@ function rentImport(file){
     const lines=(rd.result||'').split(/\r?\n/).filter(l=>l.trim());
     if(!lines.length){ alert('文件为空'); return; }
     const hdr=lines[0].split(',');
-    const dbSet=new Set((DATA.sales&&DATA.sales.detail||[]).map(r=>r.agreement_id));
+    const dbSet=new Set((DATA.sales&&(DATA.sales||{}).detail||[]).map(r=>r.agreement_id));
     const rows=lines.slice(1).map(function(l){
       const c=l.split(','); const o={}; hdr.forEach(function(h,i){ const k=RENT_MAP[h.trim()]; if(k)o[k]=c[i]||''; });
       o.calib=(o.agreement&&dbSet.has(+o.agreement))?'matched':'only_wps';
@@ -7417,7 +7417,7 @@ function drawFinWithdraw(){
   const note=document.getElementById('fw-note');
   if(note) note.innerHTML='✅ 已点亮：提现总览（全量 '+fmt(wc)+' 笔 / ¥'+money(wt)+'），含月度趋势 + 对象分布 + 逐笔明细（支持导出全量）。';
 }
-function drawFinRecon(f, rows, filtered){
+function drawFinRecon(f, rows, filtered){ rows=rows||[];
   const R=(DATA.finance&&DATA.finance.recon)||{};
   const inc=(R.by_in||[]).slice();
   const exp=(R.by_out||[]).slice();
@@ -8030,7 +8030,7 @@ const AGR_PKG_COLS=[
   {k:'__op',h:'操作',f:function(v,r){return '<a href="javascript:void(0)" class="jump" onclick="alert(\'退款操作待接入 t_service_order\')">退款</a> <a href="javascript:void(0)" class="jump" onclick="alert(\'套餐使用明细待接入\')">套餐使用明细</a>';}}
 ];
 function openAgreementDrawer(aid){
-  document.getElementById('agr-drawer-title').textContent='协议详情 · '+aid;
+  (document.getElementById('agr-drawer-title')||{}).textContent ='协议详情 · '+aid;
   const bikes=(DATA.user.agreement_bikes||{})[aid]||[];
   buildTable('agr-veh-list',[
     {k:'vehicle_id',h:'车辆ID'},{k:'vehicle_name',h:'车辆名称'},
@@ -8106,7 +8106,7 @@ function drawSingleUser(raw){
     renderConsumerProfile(buildOfflineProfile(q, fullMatched));
     return;
   }
-  const U=(DATA.user&&DATA.user.detail)||[];
+  const U=(DATA.user&&(DATA.user||{}).detail)||[];
   const matched=U.filter(r=> String(r.phone)===q || String(r.agreement_id)===q || String(r.rent_id)===q);
   if(!matched.length){
     body.innerHTML='';
@@ -8563,7 +8563,7 @@ function renderSingleCards(matched){
   // ═══════════════════════════════════════════
 
   h+='</div>'; // single-user-root
-  document.getElementById('u-single-body').innerHTML=h;
+  (document.getElementById('u-single-body')||{}).innerHTML =h;
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -8595,7 +8595,7 @@ function _cellMeta(light){
 function buildOfflineProfile(q, matchedRows){
   var matched=matchedRows;
   if(!matched || !matched.length){
-    const U=(DATA.user&&DATA.user.detail)||[];
+    const U=(DATA.user&&(DATA.user||{}).detail)||[];
     matched=U.filter(function(r){ return String(r.phone)===q || String(r.agreement_id)===q || String(r.rent_id)===q; });
   }
   if(!matched.length) return {user:null, matched:[]};
@@ -9032,7 +9032,7 @@ function rtSearch(q, city, status, page, size, cb){
     var url='/api/users/search?q='+encodeURIComponent(q)+'&city='+encodeURIComponent(city)+'&status='+encodeURIComponent(status)+'&page='+page+'&size='+size;
     fetch(url,{credentials:'same-origin'}).then(function(r){return r.json();}).then(function(j){cb(j);}).catch(function(){cb({error:'网络异常，请确认 server.py 已启动且已登录'});});
   } else {
-    var U=(DATA.user&&DATA.user.detail)||[];
+    var U=(DATA.user&&(DATA.user||{}).detail)||[];
     var rows=U.filter(function(r){
       if(q){ var hit=String(r.phone).indexOf(q)>=0||String(r.name).indexOf(q)>=0||String(r.agreement_id).indexOf(q)>=0||String(r.agency).indexOf(q)>=0; if(!hit)return false; }
       if(city && r.city!==city) return false;
@@ -9245,11 +9245,11 @@ function _inRange(s,from,to){ if((!from)&&(!to)) return true; const d=_iso(s); i
 function _dateStr(s){ if(!s) return ''; return String(s).replace(/-/g,'/').slice(0,10); }
 function showRowDetail(title, cols, row){
   const m=document.getElementById('row-detail-modal'); if(!m) return;
-  document.getElementById('rd-title').textContent=title||'详情';
+  (document.getElementById('rd-title')||{}).textContent =title||'详情';
   let h='<table class="rd-tbl" style="width:100%;border-collapse:collapse">';
   cols.forEach(c=>{ if(c[2]==='action') return; h+='<tr><th style="text-align:left;padding:4px 8px;border-bottom:1px solid #eee;color:#7c879b;white-space:nowrap">'+_esc(c[0])+'</th><td style="padding:4px 8px;border-bottom:1px solid #eee">'+_esc(_colVal(row,c))+'</td></tr>'; });
   h+='</table>';
-  document.getElementById('rd-body').innerHTML=h;
+  (document.getElementById('rd-body')||{}).innerHTML =h;
   m.style.display='flex';
 }
 function _drawTable(tid){
@@ -9656,7 +9656,7 @@ function drawSiteExchangeMap(){
   const cities=Object.values(byCity).sort((a,b)=>b.swap-a.swap);
   const totalSwap=cities.reduce((s,c)=>s+c.swap,0);
   const totalSites=cities.reduce((s,c)=>s+c.sites,0);
-  if(document.getElementById('sd-rank-title')) document.getElementById('sd-rank-title').textContent='城市换电密度 Top20（共 '+cities.length+' 城 / '+fmt(totalSites)+' 网点 / '+fmt(totalSwap)+' 次）';
+  if(document.getElementById('sd-rank-title')) (document.getElementById('sd-rank-title')||{}).textContent ='城市换电密度 Top20（共 '+cities.length+' 城 / '+fmt(totalSites)+' 网点 / '+fmt(totalSwap)+' 次）';
   fillDashTable('sd-rank-table', cities.slice(0,20).map(c=>({c1:c.city,c2:fmt(c.swap),c3:fmt(c.sites)})));
   const pts=cities.filter(c=>CITY_COORD[c.city]).map(c=>{const co=CITY_COORD[c.city];return {city:c.city,lng:co[0],lat:co[1],value:c.swap,extra:'网点 '+c.sites};});
   if(_siteDistChart){_siteDistChart.dispose();_siteDistChart=null;}
@@ -10055,7 +10055,7 @@ function openModal(title, bodyHtml){
   let m=document.getElementById('__modal');
   if(!m){ m=document.createElement('div'); m.id='__modal'; m.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;display:none;align-items:center;justify-content:center'; document.body.appendChild(m); }
   m.innerHTML='<div style="background:#fff;border-radius:12px;max-width:680px;width:92%;max-height:82vh;overflow:auto;padding:18px 22px;box-shadow:0 8px 30px rgba(0,0,0,.25)"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><b style="font-size:15px">'+escTip(title)+'</b><button type="button" id="__modal-close" style="border:none;background:#f0f2f5;width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:16px">×</button></div><div id="__modal-body"></div></div>';
-  document.getElementById('__modal-body').innerHTML=bodyHtml;
+  (document.getElementById('__modal-body')||{}).innerHTML =bodyHtml;
   document.getElementById('__modal-close').onclick=function(){ m.style.display='none'; };
   m.onclick=function(e){ if(e.target===m) m.style.display='none'; };
   m.style.display='flex';
@@ -10666,7 +10666,7 @@ function drawBizDecOps(){
   var el=document.getElementById('panel-bizdec-ops'); if(!el)return;
   var CD=(DATA.device&&DATA.device.cabinet_detail)||[];
   var EMP=((DATA.personnel&&DATA.personnel.employees)||[]).map(function(e){return e.name;}).filter(Boolean);
-  var WO=(DATA.workorder&&DATA.workorder.detail)||[];
+  var WO=(DATA.workorder&&(DATA.workorder||{}).detail)||[];
   var exch=(DATA.site&&DATA.site.exchange_rank_30d)||[];
   var traffic={}; exch.forEach(function(e){ traffic[e.site]=+e.count||0; });
   var cand=CD.map(function(c){
@@ -10834,7 +10834,7 @@ function drawCouponOverview(f){
     {k:'unused_count',h:'未使用'},{k:'unredeemed_count',h:'未兑换'},
     {k:'cancelled_count',h:'作废'},{k:'refunded_count',h:'已退款'},{k:'unpaid_count',h:'未付款'}
   ],bc);
-  document.getElementById('cp-count').textContent=bc.length?('（'+bc.length+'）'):'';
+  (document.getElementById('cp-count')||{}).textContent =bc.length?('（'+bc.length+'）'):'';
 }
 
 // C2 代理商发券统计（对齐用户 CSV 32 列）
@@ -10857,7 +10857,7 @@ function drawCouponAgentIssue(f){
     {k:'no_pay_remark',h:'无需支付备注'},
     {k:'refund_status',h:'退款状态'},{k:'refund_amount',h:'退款金额（元）',f:v=>money(v)},{k:'refund_time',h:'退款时间'}
   ],((DATA.coupon&&DATA.coupon.agent_issue))||[]);
-  document.getElementById('cpai-count').textContent=(((DATA.coupon&&DATA.coupon.agent_issue))||[]).length?('（'+((DATA.coupon&&DATA.coupon.agent_issue)||[]).length+' 条，全量）'):'';
+  (document.getElementById('cpai-count')||{}).textContent =(((DATA.coupon&&DATA.coupon.agent_issue))||[]).length?('（'+((DATA.coupon&&DATA.coupon.agent_issue)||[]).length+' 条，全量）'):'';
 }
 
 // C3 商户端发券统计（53 列对齐 CSV）
@@ -10889,7 +10889,7 @@ function drawCouponMerchantIssue(f){
     {k:'creator_id',h:'下单人ID'},{k:'creator_name',h:'下单人名称'},{k:'creator_type',h:'下单人类型'},
     {k:'create_time',h:'创建时间'}
   ],MI);
-  document.getElementById('cpmi-count').textContent=MIhas?('（'+MI.length+' 条，全量）'):'';
+  (document.getElementById('cpmi-count')||{}).textContent =MIhas?('（'+MI.length+' 条，全量）'):'';
 }
 
 // C4 合约份额采购统计（23 列对齐 CSV）
@@ -10906,7 +10906,7 @@ function drawCouponContractPurchase(f){
     {k:'order_status',h:'订单状态',f:v=>stTag(v)},{k:'pay_method',h:'支付方式'},{k:'pay_trade_no',h:'支付流水号'},
     {k:'pay_time',h:'支付时间'},{k:'refund_trade_no',h:'退款流水号'},{k:'refund_time',h:'退款时间'}
   ],CT);
-  document.getElementById('cppc-count').textContent=CThas?('（'+CT.length+' 条，全量）'):'';
+  (document.getElementById('cppc-count')||{}).textContent =CThas?('（'+CT.length+' 条，全量）'):'';
 }
 
 // C4-detail 合约销售份额明细（18 列对齐 CSV）
@@ -10921,7 +10921,7 @@ function drawCouponContractDetail(f){
     {k:'user_id',h:'用户ID'},{k:'user_phone',h:'用户手机号'},{k:'agreement_status',h:'协议当前状态'},{k:'package_name',h:'合约套餐'},
     {k:'agreement_create_time',h:'协议创建时间'},{k:'agreement_activate_time',h:'协议激活时间'},{k:'agreement_terminate_time',h:'协议终止时间'}
   ],CD);
-  document.getElementById('cpcd-count').textContent=CDhas?('（'+CD.length+' 条，全量）'):'';
+  (document.getElementById('cpcd-count')||{}).textContent =CDhas?('（'+CD.length+' 条，全量）'):'';
 }
 
 // C5 用户优惠券明细
@@ -10936,7 +10936,7 @@ function drawCouponUserDetail(f){
     {k:'agreement_id',h:'协议ID'},{k:'site_name',h:'网点'},{k:'battery_product_name',h:'电池产品'},
     {k:'package_name',h:'套餐'},{k:'pay_method',h:'支付方式'},{k:'refund_status',h:'退款状态'}
   ],((DATA.coupon&&DATA.coupon.user_detail))||[]);
-  document.getElementById('cpud-count').textContent=(((DATA.coupon&&DATA.coupon.user_detail))||[]).length?('（'+((DATA.coupon&&DATA.coupon.user_detail)||[]).length+'）'):'';
+  (document.getElementById('cpud-count')||{}).textContent =(((DATA.coupon&&DATA.coupon.user_detail))||[]).length?('（'+((DATA.coupon&&DATA.coupon.user_detail)||[]).length+'）'):'';
 }
 
 // C6 优惠券资源（领券中心）
@@ -10950,8 +10950,8 @@ function drawCouponResource(f){
     {k:'creator',h:'创建员工'},{k:'created_at',h:'创建时间'},
     {k:'ops',h:'操作',f:v=>'<span class="ops">编辑 | 删除</span>'}
   ],(DATA.coupon&&DATA.coupon.resource)||[]);
-  document.getElementById('cpr-count').textContent=((DATA.coupon&&DATA.coupon.resource)||[]).length?('（'+((DATA.coupon&&DATA.coupon.resource)||[]).length+'）'):'';
-  document.getElementById('cpr-pagination').textContent='共 '+((DATA.coupon&&DATA.coupon.resource)||[]).length+' 条/页';
+  (document.getElementById('cpr-count')||{}).textContent =((DATA.coupon&&DATA.coupon.resource)||[]).length?('（'+((DATA.coupon&&DATA.coupon.resource)||[]).length+'）'):'';
+  (document.getElementById('cpr-pagination')||{}).textContent ='共 '+((DATA.coupon&&DATA.coupon.resource)||[]).length+' 条/页';
 }
 
 function switchCpMerchantTab(tab){
@@ -11064,7 +11064,7 @@ function renderChinaBubbles(cid, pts, opt){
   if(opt.onDrill){ chart.on('click', function(p){ if(p.data&&p.data.raw) opt.onDrill(p.data.raw); }); }
   return chart;
 }
-function renderDrillRows(tid, rows, onRow){
+function renderDrillRows(tid, rows, onRow){ rows=rows||[];
   const tb=document.getElementById(tid); if(!tb) return; const body=tb.querySelector('tbody'); if(!body) return;
   if(!rows||!rows.length){ body.innerHTML='<tr><td colspan="3" style="color:#9fb3d1;padding:14px">暂无下级明细</td></tr>'; return; }
   body.innerHTML=rows.map((r,i)=>'<tr class="drill-row" data-i="'+i+'" style="cursor:pointer"><td>'+(r.c1||'')+'</td><td>'+(r.c2!=null?fmt(r.c2):'')+'</td><td>'+(r.c3!=null?fmt(r.c3):'')+'</td></tr>').join('');
@@ -11093,7 +11093,7 @@ function drawDashExch(){
   if(_exchChart){_exchChart.dispose();_exchChart=null;}
   document.getElementById('exch-back-btn').style.display='none';
   document.getElementById('exch-drill-panel').style.display='none';
-  document.getElementById('exch-rank-title').textContent='城市换电密度 Top15（点击气泡钻取区域/街道）';
+  (document.getElementById('exch-rank-title')||{}).textContent ='城市换电密度 Top15（点击气泡钻取区域/街道）';
   _exchChart=renderChinaBubbles('exch-map', pts, {tipLabel:'30天换电',denseLabel:'密',sparseLabel:'稀',
     colors:['#0a2a4a','#1d6fb8','#3895ff','#22c997','#f59e0b','#f0544f'],
     onDrill:function(raw){ drillExch(raw.city); }});
@@ -11102,9 +11102,9 @@ function drillExch(city){
   const G=(DATA.geo&&DATA.geo.exch_city_area_street)||[];
   const cityObj=G.find(x=>x.city===city)||{areas:[]};
   const areas=(cityObj.areas||[]).map(a=>({area:a.area, total:a.streets.reduce((s,t)=>s+(t.count||0),0), streeds:a.streets||[]})).sort((a,b)=>b.total-a.total);
-  document.getElementById('exch-drill-title').textContent=city+' · 区域换电明细（点击区域看街道）';
+  (document.getElementById('exch-drill-title')||{}).textContent =city+' · 区域换电明细（点击区域看街道）';
   document.getElementById('exch-drill-panel').style.display='block';
-  document.getElementById('exch-rank-title').textContent=city+' · 区域 Top15';
+  (document.getElementById('exch-rank-title')||{}).textContent =city+' · 区域 Top15';
   renderDrillRows('exch-rank-table', areas.slice(0,15).map(a=>({c1:a.area,c2:a.total,c3:''})), function(row){
     drillExchStreet(city, row.c1, row.streets);
   });
@@ -11112,7 +11112,7 @@ function drillExch(city){
   document.getElementById('exch-back-btn').onclick=function(){ document.getElementById('exch-back-btn').style.display='none'; drawDashExch(); };
 }
 function drillExchStreet(city, area, streets){
-  document.getElementById('exch-drill-title').textContent=city+' · '+area+' · 街道换电明细';
+  (document.getElementById('exch-drill-title')||{}).textContent =city+' · '+area+' · 街道换电明细';
   const rows=(streets||[]).slice().sort((a,b)=>b.count-a.count).slice(0,30).map(t=>({c1:t.street,c2:t.count,c3:''}));
   renderDrillRows('exch-rank-table', rows, null);
 }
@@ -11133,7 +11133,7 @@ function drawDashUV(){
   if(_uvChart){_uvChart.dispose();_uvChart=null;}
   document.getElementById('uv-back-btn').style.display='none';
   document.getElementById('uv-drill-panel').style.display='none';
-  document.getElementById('uv-rank-title').textContent='城市用户密度 Top15（点击气泡钻取区域）';
+  (document.getElementById('uv-rank-title')||{}).textContent ='城市用户密度 Top15（点击气泡钻取区域）';
   _uvChart=renderChinaBubbles('uv-map', pts, {tipLabel:'用户数',denseLabel:'密',sparseLabel:'稀',
     colors:['#0f2f4a','#7b2ff7','#a855f7','#3895ff','#22c997','#f59e0b'],
     onDrill:function(raw){ drillUV(raw.city); }});
@@ -11142,9 +11142,9 @@ function drillUV(city){
   const G=(DATA.geo&&DATA.geo.user_city_area)||[];
   const cityObj=G.find(x=>x.city===city)||{areas:[]};
   const areas=(cityObj.areas||[]).slice().sort((a,b)=>b.count-a.count);
-  document.getElementById('uv-drill-title').textContent=city+' · 区域用户分布（点击区域看明细）';
+  (document.getElementById('uv-drill-title')||{}).textContent =city+' · 区域用户分布（点击区域看明细）';
   document.getElementById('uv-drill-panel').style.display='block';
-  document.getElementById('uv-rank-title').textContent=city+' · 区域 Top15';
+  (document.getElementById('uv-rank-title')||{}).textContent =city+' · 区域 Top15';
   renderDrillRows('uv-rank-table', areas.slice(0,15).map(a=>({c1:a.area,c2:a.count,c3:''})), null);
   document.getElementById('uv-back-btn').style.display='inline-block';
   document.getElementById('uv-back-btn').onclick=function(){ document.getElementById('uv-back-btn').style.display='none'; drawDashUV(); };
@@ -12612,7 +12612,7 @@ function drawScreen4(){
       {k:'op',h:'操作',f:function(v,r){return '<button class="scr-btn" onclick="scrLockBat(\''+r.sn+'\')">锁定</button><button class="scr-btn btn-recall" onclick="scrRecallBat(\''+r.sn+'\')">召回</button>';}}
     ], hi,{});
     // 地图：按城市聚焦
-    const siteCity={}; (DATA.site&&DATA.site.detail||[]).forEach(s=>{ if(s&&s.id!=null) siteCity[s.id]=s.city; });
+    const siteCity={}; (DATA.site&&(DATA.site||{}).detail||[]).forEach(s=>{ if(s&&s.id!=null) siteCity[s.id]=s.city; });
     const byCity={}; hi.concat(list.filter(b=>b.level==='预警')).forEach(b=>{ let c=b.city; if(!c&&b.site_id!=null) c=siteCity[b.site_id]; if(c) byCity[c]=(byCity[c]||0)+1; });
     const cc=scrCityCentroids(); const riskPts=[];
     for(const c in byCity){ const ctr=cc[c]||SCR_CITY[c]; if(ctr) riskPts.push({name:c,value:[ctr[0],ctr[1],byCity[c]]}); }
@@ -12645,9 +12645,9 @@ function drawScreen1(){
     // 告警等级计数（workorder.by_priority）
     const bp=wo.by_priority||[]; const gp=x=>{const it=bp.find(d=>d.priority===x);return it?it.count:0;};
     const p0=gp('urgent'),p1=gp('normal'),p2=gp('notUrgent');
-    if(document.getElementById('s1-p0'))document.getElementById('s1-p0').textContent=p0||'—';
-    if(document.getElementById('s1-p1'))document.getElementById('s1-p1').textContent=p1||'—';
-    if(document.getElementById('s1-p2'))document.getElementById('s1-p2').textContent=p2||'—';
+    if(document.getElementById('s1-p0'))(document.getElementById('s1-p0')||{}).textContent =p0||'—';
+    if(document.getElementById('s1-p1'))(document.getElementById('s1-p1')||{}).textContent =p1||'—';
+    if(document.getElementById('s1-p2'))(document.getElementById('s1-p2')||{}).textContent =p2||'—';
     // 7日趋势（workorder 按 ID 分桶示意，逐日时间戳待接入）
     const days=[]; const d=new Date(); for(let i=6;i>=0;i--){const t=new Date(d.getTime()-i*86400000);days.push((t.getMonth()+1)+'/'+t.getDate());}
     const wd=(woList.length?woList:(wo.detail||[])); const bk=[0,0,0,0,0,0,0];
@@ -12661,7 +12661,7 @@ function drawScreen1(){
     buildTable('s1-top',[{k:'site',h:'站点'},{k:'city',h:'城市'},{k:'count',h:'30d换电',f:v=>fmt(v)}], top.slice(0,30),{});
     // 地图：按城市聚焦
     const cc=scrCityCentroids(); const sitePts=scrSitePoints().map(p=>[p[0],p[1],1]);
-    const byCity={}; (brList.length?brList:(br.list||[])).filter(b=>b.level==='高危').forEach(b=>{let c=b.city;if(!c&&b.site_id!=null){(DATA.site&&DATA.site.detail||[]).forEach(s=>{if(s&&s.id==b.site_id)c=s.city;});}if(c)byCity[c]=(byCity[c]||0)+1;});
+    const byCity={}; (brList.length?brList:(br.list||[])).filter(b=>b.level==='高危').forEach(b=>{let c=b.city;if(!c&&b.site_id!=null){(DATA.site&&(DATA.site||{}).detail||[]).forEach(s=>{if(s&&s.id==b.site_id)c=s.city;});}if(c)byCity[c]=(byCity[c]||0)+1;});
     const riskPts=[]; for(const c in byCity){const ctr=cc[c]||SCR_CITY[c];if(ctr)riskPts.push({name:c,value:[ctr[0],ctr[1],byCity[c]]});}
     const series=[];
     if(document.getElementById('s1-lyr-site')&&document.getElementById('s1-lyr-site').checked) series.push({name:'换电站',type:'scatter',data:sitePts.slice(0,2500),symbolSize:3,itemStyle:{color:'rgba(34,197,94,.35)'}});
@@ -12753,7 +12753,7 @@ function render(){
   const M=DATA.meta||{};
   var _sync=dataSyncAt();
   // 全局头部只显示最新一次更新时间，并提示各模块独立时间见标题徽标
-  document.getElementById('genTime').textContent='数据同步（最新）：'+(_sync||'—')+' · 各模块更新时间见标题 🕒';
+  (document.getElementById('genTime')||{}).textContent ='数据同步（最新）：'+(_sync||'—')+' · 各模块更新时间见标题 🕒';
   injectSyncBadges();
 
 
@@ -12768,7 +12768,7 @@ function render(){
 
   // SALES
   const S=DATA.sales||{};
-  CAP.sales=(S.detail||[]).length; document.getElementById('s-cap').textContent=CAP.sales;
+  CAP.sales=(S.detail||[]).length; (document.getElementById('s-cap')||{}).textContent =CAP.sales;
   buildTable('s-detail',[
     {k:'user_id',h:'用户ID'},{k:'user_name',h:'用户名'},{k:'user_phone',h:'手机号'},
     {k:'agreement_id',h:'协议ID'},{k:'city',h:'城市'},{k:'site_name',h:'签约网点'},
@@ -12786,7 +12786,7 @@ function render(){
 
   // SITE
   const W=DATA.site||{};
-  CAP.site=(W.detail||[]).length; document.getElementById('w-cap').textContent=CAP.site;
+  CAP.site=(W.detail||[]).length; (document.getElementById('w-cap')||{}).textContent =CAP.site;
   kpis(document.getElementById('w-kpis'),[
     {l:'网点总数',v:fmt(W.total),nav:'site'},
     {l:'启用网点',v:fmt((W.by_status||[]).filter(x=>x.status==='on').reduce((a,b)=>a+b.count,0)),tone:'green'},
@@ -12840,7 +12840,7 @@ function render(){
   // DEVICE
   const E=DATA.device||{};
   CAP.e1=(E.cabinet_detail||[]).length; CAP.e2=(E.battery_detail||[]).length; CAP.cablist=CAP.e1; CAP.batlist=CAP.e2;
-  document.getElementById('e-cap1').textContent=CAP.e1; document.getElementById('e-cap2').textContent=CAP.e2;
+  (document.getElementById('e-cap1')||{}).textContent =CAP.e1; (document.getElementById('e-cap2')||{}).textContent =CAP.e2;
   const wc=document.getElementById('w-cabcap'); if(wc)wc.textContent=CAP.e1;
   const bc=document.getElementById('w-batcap'); if(bc)bc.textContent=CAP.e2;
   const cabCols=[
@@ -12998,7 +12998,7 @@ function render(){
   // PERSONNEL
   const P=DATA.personnel||{};
   CAP.p1=(P.employees||[]).length; CAP.p2=(P.distributors||[]).length;
-  document.getElementById('p-cap1').textContent=CAP.p1; document.getElementById('p-cap2').textContent=CAP.p2;
+  (document.getElementById('p-cap1')||{}).textContent =CAP.p1; (document.getElementById('p-cap2')||{}).textContent =CAP.p2;
   kpis(document.getElementById('p-kpis'),[
     {l:'业务员 / 推广员',v:fmt(P.promoter_total)},
     {l:'店员 / 导购',v:fmt(P.employee_total)},
@@ -13017,7 +13017,7 @@ function render(){
 
   // FINANCE
   const F=DATA.finance||{};
-  CAP.finance=(F.detail||[]).length; document.getElementById('f-cap').textContent=CAP.finance;
+  CAP.finance=(F.detail||[]).length; (document.getElementById('f-cap')||{}).textContent =CAP.finance;
   kpis(document.getElementById('f-kpis'),[
     {l:'营业收入(净额)',v:money((F.profit||{}).income_total),tone:'blue'},
     {l:'营业支出(剔除提现)',v:money((F.profit||{}).expense_op),tone:'red'},
@@ -13085,7 +13085,7 @@ document.querySelectorAll('.navitem').forEach(n=>n.onclick=()=>{
   document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
   n.classList.add('active');
   document.getElementById('v-'+n.dataset.v).classList.add('active');
-  document.getElementById('modName').textContent=MOD_NAMES[n.dataset.v]||'';
+  (document.getElementById('modName')||{}).textContent =MOD_NAMES[n.dataset.v]||'';
   if(n.dataset.v==='analytics'){ setTimeout(renderAnalytics,40); }
   if(n.dataset.v==='risk'){ setTimeout(drawRisk,40); }
   if(n.dataset.v==='bizdec'){ setTimeout(drawBizDec,40); }
@@ -13127,9 +13127,9 @@ document.addEventListener('click',e=>{ if(e.target.closest && e.target.closest('
 function initScrCitySels(){
   // 收集所有不重复的城市
   const citySet=new Set();
-  [DATA.user&&DATA.user.detail, DATA.sales&&DATA.sales.detail, DATA.site&&DATA.site.detail,
+  [DATA.user&&(DATA.user||{}).detail, DATA.sales&&(DATA.sales||{}).detail, DATA.site&&(DATA.site||{}).detail,
    DATA.device&&(DATA.device.battery_detail||[]), DATA.device&&(DATA.device.battery_risk&&DATA.device.battery_risk.list),
-   DATA.dispatch&&DATA.dispatch.site, DATA.workorder&&DATA.workorder.detail].forEach(arr=>{
+   DATA.dispatch&&DATA.dispatch.site, DATA.workorder&&(DATA.workorder||{}).detail].forEach(arr=>{
     if(Array.isArray(arr)) arr.forEach(r=>{ if(r&&r.city) citySet.add(r.city); });
   });
   const cities=[...citySet].sort();
